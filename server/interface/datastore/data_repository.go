@@ -19,8 +19,18 @@ func (repo *DataRepository) Store(d entity.Data) error {
 	return nil
 }
 
-func (repo *DataRepository) FindAll() (entity.Data, error) {
-	return entity.Data{}, nil
+func (repo *DataRepository) FindAll() ([]entity.Data, error) {
+	docs, err := repo.FirestoreClient.Client.Collection("Data").OrderBy("CreatedAt", firestore.Desc).Documents(repo.FirestoreClient.Ctx).GetAll()
+	if err != nil {
+		return make([]entity.Data, 0), err
+	}
+	data := make([]entity.Data, len(docs))
+	for i, doc := range docs {
+		d := entity.Data{}
+		mapstructure.Decode(doc.Data(), &d)
+		data[i] = d
+	}
+	return data, nil
 }
 
 func (repo *DataRepository) FindLatest() (entity.Data, error) {
