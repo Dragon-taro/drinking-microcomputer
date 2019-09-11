@@ -23,11 +23,11 @@ func NewDataController(fc *datastore.FirestoreClient) *DataController {
 }
 
 func (controller *DataController) Create(c Context) error {
-	d := entity.Data{}
-	c.Bind(&d)
+	dr := entity.DataReqest{}
+	c.Bind(&dr)
 
-	if err := controller.Interactor.Add(d); err != nil {
-		c.JSON(http.StatusInternalServerError, err)
+	if err := controller.Interactor.Add(dr); err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
 	}
 
 	return c.JSON(http.StatusCreated, "success")

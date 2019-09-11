@@ -8,5 +8,6 @@ require (
 	github.com/google/btree v1.0.0 // indirect
 	github.com/labstack/echo v3.3.10+incompatible // indirect
 	github.com/labstack/echo/v4 v4.1.10
+	github.com/mitchellh/mapstructure v1.1.2
 	google.golang.org/api v0.10.0
 )
