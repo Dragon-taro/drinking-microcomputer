@@ -7,4 +7,5 @@ import (
 
 func Router(e *echo.Echo, fc *datastore.FirestoreClient) {
 	DataRouter(e, fc)
+	PartyRouter(e, fc)
 }
