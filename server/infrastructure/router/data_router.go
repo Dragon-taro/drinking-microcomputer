@@ -6,8 +6,8 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func DataRouter(e *echo.Echo, fh *datastore.FirestoreHandler) {
-	dataController := controller.NewDataController(fh)
+func DataRouter(e *echo.Echo, fc *datastore.FirestoreClient) {
+	dataController := controller.NewDataController(fc)
 	e.GET("/hc", func(c echo.Context) error { return dataController.HealthCheck(c) })
 	e.POST("/data", func(c echo.Context) error { return dataController.Create(c) })
 }

@@ -3,11 +3,11 @@ package datastore
 import "github.com/Dragon-taro/drinking-microcomputer/server/entity"
 
 type DataRepository struct {
-	FirestoreHandler *FirestoreHandler
+	FirestoreClient *FirestoreClient
 }
 
 func (repo *DataRepository) Store(d entity.Data) error {
-	_, _, err := repo.FirestoreHandler.Client.Collection("Data").Add(repo.FirestoreHandler.Ctx, d)
+	_, _, err := repo.FirestoreClient.Client.Collection("Data").Add(repo.FirestoreClient.Ctx, d)
 	if err != nil {
 		return err
 	}

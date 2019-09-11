@@ -8,7 +8,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func NewFirestoreClient() (*datastore.FirestoreHandler, error) {
+func NewFirestoreClient() (*datastore.FirestoreClient, error) {
 	ctx := context.Background()
 	sa := option.WithCredentialsFile("./credential/drinking-microcomputer-test-3a6d76de6be6.json")
 	app, err := firebase.NewApp(ctx, nil, sa)
@@ -21,10 +21,10 @@ func NewFirestoreClient() (*datastore.FirestoreHandler, error) {
 		return nil, err
 	}
 
-	fh := &datastore.FirestoreHandler{
+	fc := &datastore.FirestoreClient{
 		Ctx:    ctx,
 		Client: client,
 	}
 
-	return fh, nil
+	return fc, nil
 }

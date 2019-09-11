@@ -5,6 +5,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func Router(e *echo.Echo, fh *datastore.FirestoreHandler) {
-	DataRouter(e, fh)
+func Router(e *echo.Echo, fc *datastore.FirestoreClient) {
+	DataRouter(e, fc)
 }

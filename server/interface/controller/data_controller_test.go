@@ -7,8 +7,8 @@ import (
 )
 
 func TestCreateDataController(t *testing.T) {
-	fh, _ := firestore.NewFirestoreClient()
-	dataController := NewDataController(fh)
+	fc, _ := firestore.NewFirestoreClient()
+	dataController := NewDataController(fc)
 
 	t.Log(dataController)
 }

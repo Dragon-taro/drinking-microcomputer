@@ -12,11 +12,11 @@ type DataController struct {
 	Interactor usecase.DataInteractor
 }
 
-func NewDataController(fh *datastore.FirestoreHandler) *DataController {
+func NewDataController(fc *datastore.FirestoreClient) *DataController {
 	return &DataController{
 		Interactor: usecase.DataInteractor{
 			DataRepository: &datastore.DataRepository{
-				FirestoreHandler: fh,
+				FirestoreClient: fc,
 			},
 		},
 	}
