@@ -2,6 +2,7 @@ package firestore
 
 import (
 	"context"
+	"os"
 
 	firebase "firebase.google.com/go"
 	"github.com/Dragon-taro/drinking-microcomputer/server/interface/datastore"
@@ -10,7 +11,9 @@ import (
 
 func NewFirestoreClient() (*datastore.FirestoreClient, error) {
 	ctx := context.Background()
-	sa := option.WithCredentialsFile("./credential/drinking-microcomputer-test-3a6d76de6be6.json")
+
+	jsonPath := os.Getenv("JSON_PATH")
+	sa := option.WithCredentialsFile(jsonPath)
 	app, err := firebase.NewApp(ctx, nil, sa)
 	if err != nil {
 		return nil, err
