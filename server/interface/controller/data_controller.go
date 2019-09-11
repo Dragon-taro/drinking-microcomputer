@@ -6,13 +6,18 @@ import (
 	"github.com/Dragon-taro/drinking-microcomputer/server/entity"
 	"github.com/Dragon-taro/drinking-microcomputer/server/interface/datastore"
 	"github.com/Dragon-taro/drinking-microcomputer/server/usecase"
+	"gopkg.in/go-playground/validator.v9"
 )
 
 type DataController struct {
 	Interactor usecase.DataInteractor
 }
 
+var validate *validator.Validate
+
 func NewDataController(fc *datastore.FirestoreClient) *DataController {
+	validate = validator.New()
+
 	return &DataController{
 		Interactor: usecase.DataInteractor{
 			DataRepository: &datastore.DataRepository{
@@ -25,6 +30,10 @@ func NewDataController(fc *datastore.FirestoreClient) *DataController {
 func (controller *DataController) Create(c Context) error {
 	dr := entity.DataReqest{}
 	c.Bind(&dr)
+
+	if err := validate.Struct(dr); err != nil {
+		return c.JSON(http.StatusBadRequest, "invalid request")
+	}
 
 	if err := controller.Interactor.Add(dr); err != nil {
 		return c.JSON(http.StatusInternalServerError, err)

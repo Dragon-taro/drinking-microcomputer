@@ -12,5 +12,5 @@ type Data struct {
 }
 
 type DataReqest struct {
-	Amount int
+	Amount int `validate:"required"`
 }
