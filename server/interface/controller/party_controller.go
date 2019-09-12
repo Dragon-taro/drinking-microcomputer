@@ -37,3 +37,11 @@ func (controller *PartyController) Index(c Context) error {
 
 	return c.JSON(http.StatusOK, p)
 }
+
+func (controller *PartyController) FinishLatest(c Context) error {
+	if err := controller.Interactor.FinishLatest(); err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
+
+	return c.JSON(http.StatusOK, "success")
+}

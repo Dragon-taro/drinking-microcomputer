@@ -10,4 +10,5 @@ func PartyRouter(e *echo.Echo, fc *datastore.FirestoreClient) {
 	partyController := controller.NewPartyController(fc)
 	e.GET("/party", func(c echo.Context) error { return partyController.Index(c) })
 	e.POST("/party", func(c echo.Context) error { return partyController.Create(c) })
+	e.PATCH("/party/finish", func(c echo.Context) error { return partyController.FinishLatest(c) })
 }

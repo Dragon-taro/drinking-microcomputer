@@ -11,16 +11,15 @@ type PartyInteractor struct {
 }
 
 func (i *PartyInteractor) Add() error {
+	// 終わってないPartyは一個しか存在しないようにする
+	if err := i.PartyRepository.FinishAll(); err != nil {
+		return err
+	}
+
 	p := entity.Party{
 		CreatedAt:  time.Now(),
 		IsFinished: false,
-		Data: []entity.Data{
-			entity.Data{
-				CreatedAt: time.Now(),
-			},
-		},
 	}
-
 	if err := i.PartyRepository.Store(p); err != nil {
 		return err
 	}
@@ -36,4 +35,12 @@ func (i *PartyInteractor) LatestParty() (entity.Party, error) {
 	}
 
 	return p, nil
+}
+
+func (i *PartyInteractor) FinishLatest() error {
+	if err := i.PartyRepository.FinishLatest(); err != nil {
+		return err
+	}
+
+	return nil
 }

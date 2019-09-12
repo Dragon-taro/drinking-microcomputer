@@ -8,5 +8,4 @@ type Party struct {
 	CreatedAt  time.Time
 	FinishedAt time.Time
 	IsFinished bool
-	Data       []Data
 }

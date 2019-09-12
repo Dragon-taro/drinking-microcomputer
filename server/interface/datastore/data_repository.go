@@ -11,8 +11,12 @@ type DataRepository struct {
 }
 
 func (repo *DataRepository) Store(d entity.Data) error {
-	_, _, err := repo.FirestoreClient.Client.Collection("Data").Add(repo.FirestoreClient.Ctx, d)
+	latestParty, err := repo.getLatestpartyRef()
 	if err != nil {
+		return err
+	}
+
+	if _, _, err := latestParty.Ref.Collection("Data").Add(repo.FirestoreClient.Ctx, d); err != nil {
 		return err
 	}
 
@@ -20,7 +24,12 @@ func (repo *DataRepository) Store(d entity.Data) error {
 }
 
 func (repo *DataRepository) FindAll() ([]entity.Data, error) {
-	docs, err := repo.FirestoreClient.Client.Collection("Data").OrderBy("CreatedAt", firestore.Desc).Documents(repo.FirestoreClient.Ctx).GetAll()
+	latestParty, err := repo.getLatestpartyRef()
+	if err != nil {
+		return nil, err
+	}
+
+	docs, err := latestParty.Ref.Collection("Data").OrderBy("CreatedAt", firestore.Desc).Documents(repo.FirestoreClient.Ctx).GetAll()
 	if err != nil {
 		return make([]entity.Data, 0), err
 	}
@@ -34,7 +43,12 @@ func (repo *DataRepository) FindAll() ([]entity.Data, error) {
 }
 
 func (repo *DataRepository) FindLatest() (entity.Data, error) {
-	doc, err := repo.FirestoreClient.Client.Collection("Data").OrderBy("CreatedAt", firestore.Desc).Limit(1).Documents(repo.FirestoreClient.Ctx).Next()
+	latestParty, err := repo.getLatestpartyRef()
+	if err != nil {
+		return entity.Data{}, err
+	}
+
+	doc, err := latestParty.Ref.Collection("Data").OrderBy("CreatedAt", firestore.Desc).Limit(1).Documents(repo.FirestoreClient.Ctx).Next()
 	if err != nil {
 		return entity.Data{}, err
 	}
@@ -42,4 +56,8 @@ func (repo *DataRepository) FindLatest() (entity.Data, error) {
 	d := entity.Data{}
 	mapstructure.Decode(doc.Data(), &d)
 	return d, nil
+}
+
+func (repo *DataRepository) getLatestpartyRef() (*firestore.DocumentSnapshot, error) {
+	return repo.FirestoreClient.Client.Collection("Party").OrderBy("CreatedAt", firestore.Desc).Limit(1).Documents(repo.FirestoreClient.Ctx).Next()
 }
