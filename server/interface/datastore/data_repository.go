@@ -59,5 +59,5 @@ func (repo *DataRepository) FindLatest() (entity.Data, error) {
 }
 
 func (repo *DataRepository) getLatestpartyRef() (*firestore.DocumentSnapshot, error) {
-	return repo.FirestoreClient.Client.Collection("Party").OrderBy("CreatedAt", firestore.Desc).Limit(1).Documents(repo.FirestoreClient.Ctx).Next()
+	return repo.FirestoreClient.Client.Collection("Party").Where("IsFinished", "==", false).Limit(1).Documents(repo.FirestoreClient.Ctx).Next()
 }
