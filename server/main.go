@@ -8,11 +8,11 @@ import (
 
 func main() {
 	e := echo.New()
-	fh, err := firestore.NewFirestoreClient()
+	fc, err := firestore.NewFirestoreClient()
 	if err != nil {
 		panic(err)
 	}
-	router.Router(e, fh)
+	router.Router(e, fc)
 
 	e.Logger.Fatal(e.Start(":3000"))
 }

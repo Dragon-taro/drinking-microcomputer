@@ -1,7 +1,7 @@
 package usecase
 
 import (
-	"fmt"
+	"errors"
 	"time"
 
 	"github.com/Dragon-taro/drinking-microcomputer/server/entity"
@@ -36,11 +36,9 @@ func (i *DataInteractor) Data() ([]entity.Data, error) {
 
 func (i *DataInteractor) createData(dr entity.DataReqest) (entity.Data, error) {
 	latestData, err := i.DataRepository.FindLatest()
-	// TODO: iterableの中身がない時の処理
-	fmt.Println(latestData)
 	if err != nil {
-		fmt.Println("err", err)
-		return entity.Data{}, err
+		errMsg := errors.New(dataErr(err))
+		return entity.Data{}, errMsg
 	}
 
 	diff := 0
@@ -58,4 +56,13 @@ func (i *DataInteractor) createData(dr entity.DataReqest) (entity.Data, error) {
 	}
 
 	return d, nil
+}
+
+func dataErr(err error) string {
+	switch err.Error() {
+	case "no more items in iterator":
+		return "no parties are available"
+	default:
+		return err.Error()
+	}
 }

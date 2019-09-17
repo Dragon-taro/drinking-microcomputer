@@ -36,7 +36,7 @@ func (controller *DataController) Create(c Context) error {
 	}
 
 	if err := controller.Interactor.Add(dr); err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
 	return c.JSON(http.StatusCreated, "success")
@@ -49,7 +49,7 @@ func (controller *DataController) HealthCheck(c Context) error {
 func (controller *DataController) Index(c Context) error {
 	d, err := controller.Interactor.Data()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, d)
