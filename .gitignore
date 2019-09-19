@@ -1,1 +1,3 @@
 /server/credential
+.env
+*.swp

@@ -1,0 +1,6 @@
+tar:
+	gsutil cp gs://tar-for-deploy/dist.tgz .
+	tar -xzvf dist.tgz
+
+run: tar
+	sudo systemctl status server
