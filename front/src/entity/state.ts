@@ -1,0 +1,5 @@
+import { Party } from "./party";
+
+export interface RootState {
+  party: Party;
+}

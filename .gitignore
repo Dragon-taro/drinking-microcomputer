@@ -1,3 +1,4 @@
 /server/credential
 .env
 *.swp
+node_modules
