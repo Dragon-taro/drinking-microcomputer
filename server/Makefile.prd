@@ -3,4 +3,4 @@ tar:
 	tar -xzvf dist.tgz
 
 run: tar
-	sudo systemctl status server
+	sudo systemctl restart server

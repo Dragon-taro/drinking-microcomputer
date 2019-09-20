@@ -8,10 +8,10 @@ dist/server:
 
 build:
 	go build -o dist/server main.go
-	cp -r credential/ dist/credential
-	cp -r .env dist/.env
 
 deploy: dist/server
+	cp -r credential/ dist/credential
+	cp .env dist/.env
 	tar -czvf dist.tgz dist/
 	gsutil cp ./dist.tgz gs://tar-for-deploy
 	gsutil cp ./Makefile.prd gs://tar-for-deploy/Makefile
