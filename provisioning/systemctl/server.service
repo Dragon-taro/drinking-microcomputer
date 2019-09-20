@@ -1,0 +1,16 @@
+[Unit]
+Description = This is a server for Drinking Microcomputer.
+
+[Service]
+WorkingDirectory = /home/dragontaro/dist
+
+ExecStart = /home/dragontaro/dist/server
+ExecStop = /bin/kill -HUP $MAINOID
+ExecReload = /bin/kill -HUP $MAINOID && /home/dragontaro/dist/server
+
+Restart = always
+
+Type = simple
+
+[Install]
+WantedBy = multi-user.target
