@@ -23,7 +23,7 @@ func (repo *DataRepository) Store(d entity.Data) error {
 	return nil
 }
 
-func (repo *DataRepository) FindAll() ([]entity.Data, error) {
+func (repo *DataRepository) FindAll() (*[]entity.Data, error) {
 	latestParty, err := repo.getLatestpartyRef()
 	if err != nil {
 		return nil, err
@@ -31,7 +31,7 @@ func (repo *DataRepository) FindAll() ([]entity.Data, error) {
 
 	docs, err := latestParty.Ref.Collection("Data").OrderBy("CreatedAt", firestore.Desc).Documents(repo.FirestoreClient.Ctx).GetAll()
 	if err != nil {
-		return make([]entity.Data, 0), err
+		return nil, err
 	}
 	data := make([]entity.Data, len(docs))
 	for i, doc := range docs {
@@ -39,22 +39,22 @@ func (repo *DataRepository) FindAll() ([]entity.Data, error) {
 		mapstructure.Decode(doc.Data(), &d)
 		data[i] = d
 	}
-	return data, nil
+	return &data, nil
 }
 
-func (repo *DataRepository) FindLatest() (entity.Data, error) {
+func (repo *DataRepository) FindLatest() (*entity.Data, error) {
 	latestParty, err := repo.getLatestpartyRef()
 	if err != nil {
-		return entity.Data{}, err
+		return nil, err
 	}
 
 	doc, err := latestParty.Ref.Collection("Data").OrderBy("CreatedAt", firestore.Desc).Limit(1).Documents(repo.FirestoreClient.Ctx).Next()
 	if err != nil {
-		return entity.Data{}, err
+		return nil, err
 	}
 
-	d := entity.Data{}
-	mapstructure.Decode(doc.Data(), &d)
+	d := &entity.Data{}
+	mapstructure.Decode(doc.Data(), d)
 	return d, nil
 }
 

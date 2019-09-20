@@ -29,13 +29,13 @@ func (repo *PartyRepository) Store(p entity.Party) error {
 	return nil
 }
 
-func (repo *PartyRepository) FindLatest() (entity.Party, error) {
+func (repo *PartyRepository) FindLatest() (*entity.Party, error) {
 	doc, err := repo.latestPartySnap()
 	if err != nil {
-		return entity.Party{}, err
+		return nil, err
 	}
 
-	d := entity.Party{}
+	d := &entity.Party{}
 	mapstructure.Decode(doc.Data(), &d)
 	return d, nil
 }
