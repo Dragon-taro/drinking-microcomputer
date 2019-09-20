@@ -6,8 +6,7 @@ import (
 
 type PartyRepository interface {
 	Store(entity.Party) error
-	// FindAll() ([]entity.Party, error)
-	FindLatest() (entity.Party, error)
+	FindLatest() (*entity.Party, error)
 	FinishAll() error
 	FinishLatest() error
 }

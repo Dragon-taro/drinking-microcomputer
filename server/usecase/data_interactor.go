@@ -25,10 +25,10 @@ func (i *DataInteractor) Add(dr entity.DataReqest) error {
 	return nil
 }
 
-func (i *DataInteractor) Data() ([]entity.Data, error) {
+func (i *DataInteractor) Data() (*[]entity.Data, error) {
 	d, err := i.DataRepository.FindAll()
 	if err != nil {
-		return make([]entity.Data, 0), err
+		return nil, err
 	}
 
 	return d, nil

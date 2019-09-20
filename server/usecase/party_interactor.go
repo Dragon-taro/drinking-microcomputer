@@ -10,10 +10,10 @@ type PartyInteractor struct {
 	PartyRepository PartyRepository
 }
 
-func (i *PartyInteractor) Add() error {
+func (i *PartyInteractor) Add() (*entity.Party, error) {
 	// 終わってないPartyは一個しか存在しないようにする
 	if err := i.PartyRepository.FinishAll(); err != nil {
-		return err
+		return nil, err
 	}
 
 	p := entity.Party{
@@ -21,17 +21,17 @@ func (i *PartyInteractor) Add() error {
 		IsFinished: false,
 	}
 	if err := i.PartyRepository.Store(p); err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return &p, nil
 }
 
-func (i *PartyInteractor) LatestParty() (entity.Party, error) {
+func (i *PartyInteractor) LatestParty() (*entity.Party, error) {
 	p, err := i.PartyRepository.FindLatest()
 
 	if err != nil {
-		return entity.Party{}, err
+		return nil, err
 	}
 
 	return p, nil

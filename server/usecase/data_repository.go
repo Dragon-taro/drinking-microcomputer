@@ -6,6 +6,6 @@ import (
 
 type DataRepository interface {
 	Store(entity.Data) error
-	FindAll() ([]entity.Data, error)
-	FindLatest() (entity.Data, error)
+	FindAll() (*[]entity.Data, error)
+	FindLatest() (*entity.Data, error)
 }

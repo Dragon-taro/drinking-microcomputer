@@ -22,11 +22,12 @@ func NewPartyController(fc *datastore.FirestoreClient) *PartyController {
 }
 
 func (controller *PartyController) Create(c Context) error {
-	if err := controller.Interactor.Add(); err != nil {
+	p, err := controller.Interactor.Add()
+	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	return c.JSON(http.StatusCreated, "success")
+	return c.JSON(http.StatusCreated, p)
 }
 
 func (controller *PartyController) Index(c Context) error {
