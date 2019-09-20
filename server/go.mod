@@ -8,7 +8,8 @@ require (
 	github.com/go-playground/locales v0.12.1 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
 	github.com/google/btree v1.0.0 // indirect
-	github.com/labstack/echo v3.3.10+incompatible // indirect
+	github.com/joho/godotenv v1.3.0 // indirect
+	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/echo/v4 v4.1.10
 	github.com/leodido/go-urn v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.1.2
