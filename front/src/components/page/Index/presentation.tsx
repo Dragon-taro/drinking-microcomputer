@@ -1,7 +1,11 @@
 import * as React from "react";
 import { Props } from "./type";
 
-const Index: React.FunctionComponent<Props> = ({ finishParty }) => {
+const Index: React.FunctionComponent<Props> = ({ finishParty, getData }) => {
+  React.useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <div>
       <div>
