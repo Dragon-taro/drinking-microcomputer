@@ -5,10 +5,10 @@ import (
 )
 
 type Data struct {
-	CreatedAt   time.Time
-	Amount      int
-	TotalAmount int
-	Diff        int
+	CreatedAt   time.Time `json:"createdAt"`
+	Amount      int `json:"amount"`
+	TotalAmount int `json:"totalAmount"`
+	Diff        int `json:"diff"`
 }
 
 type DataReqest struct {
