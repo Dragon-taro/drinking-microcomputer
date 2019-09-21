@@ -1,15 +1,14 @@
 import { RootState } from "../../../entity/state";
-import { StateProps } from "./type";
+import { StateProps, DispatchProps } from "./type";
 import { connect } from "react-redux";
 import Application from "./presentation";
-import { Dispatch } from "redux";
 import { getParty } from "../../../redux/party/effects";
 
 const mapStateToProps = (state: RootState): StateProps => ({
   party: state.party
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: any): DispatchProps => ({
   getParty: () => {
     dispatch(getParty());
   }

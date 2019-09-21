@@ -4,7 +4,7 @@ export interface StateProps {
   party: Party;
 }
 
-interface DispatchProps {
+export interface DispatchProps {
   getParty: () => void;
 }
 

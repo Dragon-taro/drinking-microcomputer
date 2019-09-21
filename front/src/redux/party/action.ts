@@ -2,7 +2,7 @@ import { Party } from "../../entity/party";
 import { SET_PARTY } from "./constant";
 import { Action } from "../utils/action";
 
-export const setParty = (payload: Party): Action<Party> => ({
+export const setParty = (payload: Party | null): Action<Party | null> => ({
   type: SET_PARTY,
   payload: payload
 });

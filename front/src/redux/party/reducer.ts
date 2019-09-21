@@ -1,11 +1,12 @@
 import { Party } from "../../entity/party";
 import { SET_PARTY } from "./constant";
 
-const init: Party = {
-  isFinished: false
-};
+const init = null;
 
-export const partyReducer = (state: Party = init, action: any): Party => {
+export const partyReducer = (
+  state: Party | null = init,
+  action: any
+): Party | null => {
   const { type, payload } = action;
 
   switch (type) {
