@@ -3,6 +3,12 @@ version: 2.1
 node: &node
   docker:
     - image: circleci/node:stretch
+
+gcp: &gcp
+  docker:
+    - image: google/cloud-sdk
+
+root: &root
   working_directory: ~/drinking-microcomputer
 
 at_front: &at_front
@@ -11,6 +17,7 @@ at_front: &at_front
 jobs:
   build-front:
     <<: *node
+    <<: *root
     steps:
       - checkout
       - restore_cache:
@@ -20,12 +27,6 @@ jobs:
       - run:
           name: yarn install
           command: yarn install
-          <<: *at_front
-      - run:
-          name: pwd
-          command: |
-            pwd
-            ls -la
           <<: *at_front
       - save_cache:
           key: drinking-microcomputer-{{ .Branch }}-{{ checksum "front/yarn.lock" }}
@@ -40,8 +41,44 @@ jobs:
           paths:
             - public/js
 
+  deploy-front:
+    <<: *gcp
+    <<: *root
+    steps:
+      - checkout
+      - run:
+          name: init gcp
+          command: |
+            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+            gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+      - attach_workspace:
+          at: ~/drinking-microcomputer/front
+      - run:
+          name: install package
+          command: |
+            apt update
+            apt install -y make
+      - run:
+          name: initial ssh
+          command: gcloud compute ssh dragontaro@test2 --quiet --strict-host-key-checking=no --command "echo success!"
+      - run:
+          name: deploy
+          command: make deploy
+          <<: *at_front
+
 workflows:
   version: 2.1
   front-build:
     jobs:
       - build-front
+  front-deploy:
+    jobs:
+      - build-front:
+          filters:
+            branches:
+              only:
+                - feature/ci
+      - deploy-front:
+          requires:
+            - build-front
