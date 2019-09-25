@@ -1,0 +1,47 @@
+version: 2.1
+
+node: &node
+  docker:
+    - image: circleci/node:stretch
+  working_directory: ~/drinking-microcomputer
+
+at_front: &at_front
+  working_directory: ~/drinking-microcomputer/front
+
+jobs:
+  build-front:
+    <<: *node
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - drinking-microcomputer-{{ .Branch }}-{{ checksum "front/yarn.lock" }}
+            - drinking-microcomputer-{{ .Branch }}
+      - run:
+          name: yarn install
+          command: yarn install
+          <<: *at_front
+      - run:
+          name: pwd
+          command: |
+            pwd
+            ls -la
+          <<: *at_front
+      - save_cache:
+          key: drinking-microcomputer-{{ .Branch }}-{{ checksum "front/yarn.lock" }}
+          paths:
+            - "node_modules"
+      - run:
+          name: build
+          command: yarn build
+          <<: *at_front
+      - persist_to_workspace:
+          root: ~/drinking-microcomputer/front
+          paths:
+            - public/js
+
+workflows:
+  version: 2.1
+  front-build:
+    jobs:
+      - build-front
