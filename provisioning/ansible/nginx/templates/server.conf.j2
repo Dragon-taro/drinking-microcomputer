@@ -1,8 +1,8 @@
 server{
-	server_name         drinking-prd.dragon-taro.dev;
+	server_name         {{ host_name }};
 	listen              443 ssl;
-	ssl_certificate     /etc/letsencrypt/live/drinking-prd.dragon-taro.dev/fullchain.pem;
-	ssl_certificate_key /etc/letsencrypt/live/drinking-prd.dragon-taro.dev/privkey.pem;
+	ssl_certificate     /etc/letsencrypt/live/{{ host_name }}/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/{{ host_name }}/privkey.pem;
 
 	location /api {
 		proxy_pass http://localhost:3000;
@@ -23,6 +23,6 @@ server{
 		root         /var/www;
 	}
 
-	server_name drinking-prd.dragon-taro.dev;
-	return 301 https://drinking-prd.dragon-taro.dev;
+	server_name {{ host_name }};
+	return 301 https://{{ host_name }};
 }
