@@ -5,13 +5,13 @@ dist/server:
 	GOOS=linux \
 	GOARCH=amd64 \
 	go build -o dist/server main.go
+	cp -r credential/ dist/credential
+	cp .env dist/.env
 
 build:
 	go build -o dist/server main.go
 
 upload/tar: dist/server
-	cp -r credential/ dist/credential
-	cp .env dist/.env
 	tar -czvf dist.tgz dist/
 	gsutil cp ./dist.tgz gs://tar-for-deploy
 	gsutil cp ./Makefile.prd gs://tar-for-deploy/Makefile

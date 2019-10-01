@@ -4,6 +4,10 @@ node: &node
   docker:
     - image: circleci/node:stretch
 
+golang: &golang
+  docker:
+    - image: circleci/golang:stretch
+
 gcp: &gcp
   docker:
     - image: google/cloud-sdk
@@ -14,7 +18,31 @@ root: &root
 at_front: &at_front
   working_directory: ~/drinking-microcomputer/front
 
+at_server: &at_server
+  working_directory: ~/drinking-microcomputer/server
+
 jobs:
+  build-server:
+    <<: *golang
+    <<: *root
+    steps:
+      - checkout
+      - run:
+          name: create service account & .env
+          command: |
+            mkdir credential
+            echo ${SERVICE_ACCOUNT} >> credential/firestore.json
+            touch .env
+          <<: *at_server
+      - run:
+          name: build
+          command: make dist/server
+          <<: *at_server
+      - persist_to_workspace:
+          root: ~/drinking-microcomputer/server
+          paths:
+            - dist
+
   build-front:
     <<: *node
     <<: *root
@@ -41,7 +69,7 @@ jobs:
           paths:
             - public/js
 
-  deploy-front:
+  deploy:
     <<: *gcp
     <<: *root
     steps:
@@ -57,6 +85,8 @@ jobs:
             - "a6:7b:4e:c2:b1:3d:ad:5b:72:01:5f:31:cf:d3:68:b0"
       - attach_workspace:
           at: ~/drinking-microcomputer/front
+      - attach_workspace:
+          at: ~/drinking-microcomputer/server
       - run:
           name: install package
           command: |
@@ -66,22 +96,35 @@ jobs:
           name: initial ssh
           command: ssh -o StrictHostKeyChecking=no dragontaro@drinking.dragon-taro.dev echo success!
       - run:
-          name: deploy
+          name: deploy front
           command: make deploy
           <<: *at_front
+      - run:
+          name: deploy server
+          command: make deploy
+          <<: *at_server
+
+  # deploy-srver:
 
 workflows:
   version: 2.1
-  front-build:
+  build:
     jobs:
       - build-front
-  front-deploy:
+      - build-server
+  deploy:
     jobs:
       - build-front:
           filters:
             branches:
               only:
                 - feature/ci
-      - deploy-front:
+      - build-server:
+          filters:
+            branches:
+              only:
+                - feature/ci
+      - deploy:
           requires:
             - build-front
+            - build-server
