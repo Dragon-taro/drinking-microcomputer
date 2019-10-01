@@ -1,0 +1,130 @@
+version: 2.1
+
+node: &node
+  docker:
+    - image: circleci/node:stretch
+
+golang: &golang
+  docker:
+    - image: circleci/golang:stretch
+
+gcp: &gcp
+  docker:
+    - image: google/cloud-sdk
+
+root: &root
+  working_directory: ~/drinking-microcomputer
+
+at_front: &at_front
+  working_directory: ~/drinking-microcomputer/front
+
+at_server: &at_server
+  working_directory: ~/drinking-microcomputer/server
+
+jobs:
+  build-server:
+    <<: *golang
+    <<: *root
+    steps:
+      - checkout
+      - run:
+          name: create service account & .env
+          command: |
+            mkdir credential
+            echo ${SERVICE_ACCOUNT} >> credential/firestore.json
+            touch .env
+          <<: *at_server
+      - run:
+          name: build
+          command: make dist/server
+          <<: *at_server
+      - persist_to_workspace:
+          root: ~/drinking-microcomputer/server
+          paths:
+            - dist
+
+  build-front:
+    <<: *node
+    <<: *root
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - drinking-microcomputer-{{ .Branch }}-{{ checksum "front/yarn.lock" }}
+            - drinking-microcomputer-{{ .Branch }}
+      - run:
+          name: yarn install
+          command: yarn install
+          <<: *at_front
+      - save_cache:
+          key: drinking-microcomputer-{{ .Branch }}-{{ checksum "front/yarn.lock" }}
+          paths:
+            - "node_modules"
+      - run:
+          name: build
+          command: yarn build
+          <<: *at_front
+      - persist_to_workspace:
+          root: ~/drinking-microcomputer/front
+          paths:
+            - public/js
+
+  deploy:
+    <<: *gcp
+    <<: *root
+    steps:
+      - checkout
+      - run:
+          name: init gcp
+          command: |
+            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+            gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+      - add_ssh_keys:
+          fingerprints:
+            - "a6:7b:4e:c2:b1:3d:ad:5b:72:01:5f:31:cf:d3:68:b0"
+      - attach_workspace:
+          at: ~/drinking-microcomputer/front
+      - attach_workspace:
+          at: ~/drinking-microcomputer/server
+      - run:
+          name: install package
+          command: |
+            apt update
+            apt install -y make
+      - run:
+          name: initial ssh
+          command: ssh -o StrictHostKeyChecking=no dragontaro@drinking.dragon-taro.dev echo success!
+      - run:
+          name: deploy front
+          command: make deploy
+          <<: *at_front
+      - run:
+          name: deploy server
+          command: make deploy
+          <<: *at_server
+
+  # deploy-srver:
+
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - build-front
+      - build-server
+  deploy:
+    jobs:
+      - build-front:
+          filters:
+            branches:
+              only:
+                - master
+      - build-server:
+          filters:
+            branches:
+              only:
+                - master
+      - deploy:
+          requires:
+            - build-front
+            - build-server
