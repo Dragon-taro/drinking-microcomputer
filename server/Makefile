@@ -9,12 +9,14 @@ dist/server:
 build:
 	go build -o dist/server main.go
 
-deploy: dist/server
+upload/tar: dist/server
 	cp -r credential/ dist/credential
 	cp .env dist/.env
 	tar -czvf dist.tgz dist/
 	gsutil cp ./dist.tgz gs://tar-for-deploy
 	gsutil cp ./Makefile.prd gs://tar-for-deploy/Makefile
-	gcloud compute ssh test2 --command "gsutil cp gs://tar-for-deploy/Makefile . && make run"
+
+deploy: upload/tar
+	ssh dragontaro@drinking.dragon-taro.dev "gsutil cp gs://tar-for-deploy/Makefile . && make run"
 	rm -rf dist
 	rm dist.tgz

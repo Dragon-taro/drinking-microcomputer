@@ -52,6 +52,9 @@ jobs:
             echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
             gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+      - add_ssh_keys:
+          fingerprints:
+            - "a6:7b:4e:c2:b1:3d:ad:5b:72:01:5f:31:cf:d3:68:b0"
       - attach_workspace:
           at: ~/drinking-microcomputer/front
       - run:
@@ -61,7 +64,7 @@ jobs:
             apt install -y make
       - run:
           name: initial ssh
-          command: gcloud compute ssh dragontaro@test2 --quiet --strict-host-key-checking=no --command "echo success!"
+          command: ssh -o StrictHostKeyChecking=no dragontaro@drinking.dragon-taro.dev echo success!
       - run:
           name: deploy
           command: make deploy
