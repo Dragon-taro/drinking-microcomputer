@@ -1,0 +1,19 @@
+---
+# task file for nginx
+- name: install nginx
+  apt: name=nginx update_cache=yes cache_valid_time=3600
+
+# - name: create directories for ssl certificates
+#   file: path=/etc/nginx/ssl state=directory
+
+# - name: copy TLS key
+#   copy: src=files/nginx.key dest={{ key_file }} owner=root mode=0600
+#   notify: restart nginx
+
+# - name: copy TLS certificate
+#   copy: src=files/nginx.crt dest={{ cert_file }}
+#   notify: restart nginx
+
+- name: copy nginx config file
+  template: src=templates/server.conf.j2 dest=/etc/nginx/conf.d/default.conf
+  notify: restart nginx

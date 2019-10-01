@@ -1,0 +1,14 @@
+---
+- hosts: all
+  become: true
+
+  vars:
+    ansible_ssh_private_key_file: ~/.ssh/google_compute_engine
+    letsencrypt_email: dragon.taro.lioil@gmail.com
+    letsencrypt_cert_domains:
+      - drinking-prd.dragon-taro.dev
+    letsencrypt_renewal_command_args: '--renew-hook "systemctl restart nginx"'
+
+  roles:
+    - role: thefinn93.letsencrypt
+    - role: nginx
