@@ -12,3 +12,4 @@
   roles:
     - role: thefinn93.letsencrypt
     - role: nginx
+    - role: server
