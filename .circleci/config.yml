@@ -118,12 +118,12 @@ workflows:
           filters:
             branches:
               only:
-                - feature/ci
+                - master
       - build-server:
           filters:
             branches:
               only:
-                - feature/ci
+                - master
       - deploy:
           requires:
             - build-front
