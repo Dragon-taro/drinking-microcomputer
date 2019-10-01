@@ -1,0 +1,10 @@
+---
+plugin: gcp_compute
+projects:
+  - drinking-microcomputer-test
+zones:
+  - "us-central1-a"
+filters:
+  - name = drinking-microcomputer
+auth_kind: serviceaccount
+service_account_file: "~/gomod/drinking-microcomputer/provisioning/ansible/sa.json"

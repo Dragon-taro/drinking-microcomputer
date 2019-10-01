@@ -1,0 +1,28 @@
+server{
+	server_name         drinking-prd.dragon-taro.dev;
+	listen              443 ssl;
+	ssl_certificate     /etc/letsencrypt/live/drinking-prd.dragon-taro.dev/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/drinking-prd.dragon-taro.dev/privkey.pem;
+
+	location /api {
+		proxy_pass http://localhost:3000;
+	}
+
+	index index.html;
+
+	location / {
+		root /home/dragontaro/public;
+	}
+}
+
+server{
+	listen      80;
+
+	location ^~ /.well-known/acme-challenge/ {
+		default_type "text/plain";
+		root         /var/www;
+	}
+
+	server_name drinking-prd.dragon-taro.dev;
+	return 301 https://drinking-prd.dragon-taro.dev;
+}

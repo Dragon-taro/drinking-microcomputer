@@ -4,7 +4,8 @@ const options = {
   }
 };
 
-const url = (path: string) => `https://drinking.dragon-taro.dev/api/${path}`;
+const url = (path: string) =>
+  `https://drinking-prd.dragon-taro.dev/api/${path}`;
 
 export const get = async <T>(path: string): Promise<T> => {
   // エラーハンドリングはめんどいしなし
