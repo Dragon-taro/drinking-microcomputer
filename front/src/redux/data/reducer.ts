@@ -1,17 +1,25 @@
-import { SET_DATA } from "./constant";
-import { Data } from "../../entity/data";
+import { SET_DATA, LODING_DATA } from "./constant";
+import { DataList } from "../../entity/data";
 
-const init = null;
+const init: DataList = {
+  data: [],
+  isLoading: true
+};
 
-export const dataReducer = (
-  state: Data[] | null = init,
-  action: any
-): Data[] | null => {
+export const dataReducer = (state: DataList = init, action: any): DataList => {
   const { type, payload } = action;
 
   switch (type) {
     case SET_DATA:
-      return payload;
+      return {
+        data: payload,
+        isLoading: false
+      };
+    case LODING_DATA:
+      return {
+        ...state,
+        isLoading: true
+      };
     default:
       return state;
   }

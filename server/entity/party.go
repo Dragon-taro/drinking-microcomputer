@@ -5,7 +5,7 @@ import (
 )
 
 type Party struct {
-	CreatedAt  time.Time `json:"createdAt`
+	CreatedAt  time.Time `json:"createdAt"`
 	FinishedAt time.Time `json:"finishedAt"`
-	IsFinished bool `json:"isFinished"`
+	IsFinished bool      `json:"isFinished"`
 }

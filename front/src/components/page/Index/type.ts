@@ -1,12 +1,11 @@
-import { Data } from "../../../entity/data";
+import { DataList } from "../../../entity/data";
 
 export interface StateProps {
-  data: Data[] | null;
+  data: DataList;
 }
 
 export interface DispatchProps {
   finishParty: () => void;
-  getData: () => void;
 }
 
 export interface MergedProps {

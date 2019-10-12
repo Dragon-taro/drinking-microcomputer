@@ -15,17 +15,14 @@ const mapStateToProps = (state: RootState): StateProps => ({
 const mapDispatchToProps = (dispatch: any): DispatchProps => ({
   finishParty: () => {
     dispatch(finishParty());
-  },
-  getData: () => {
-    dispatch(getData());
   }
 });
 
 const mergeProps = (state: StateProps, dispatch: DispatchProps): Props => {
   const { data: _data } = state;
 
-  const labels = filterData(d => d.createdAt, _data);
-  const data = filterData(d => d.totalAmount, _data);
+  const labels = filterData(d => d.createdAt, _data.data);
+  const data = filterData(d => d.totalAmount, _data.data);
 
   return {
     labels,

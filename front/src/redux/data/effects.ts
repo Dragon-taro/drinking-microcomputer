@@ -1,10 +1,10 @@
 import { Dispatch } from "redux";
 import { get } from "../utils/api";
-import { setData } from "./action";
+import { setData, loadingData } from "./action";
 import { Data } from "../../entity/data";
 
 export const getData = () => async (dispatch: Dispatch) => {
+  dispatch(loadingData());
   const data = await get<Data[]>("data");
-
   dispatch(setData(data));
 };
