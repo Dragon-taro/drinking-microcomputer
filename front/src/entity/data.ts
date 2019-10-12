@@ -1,5 +1,5 @@
 export interface Data {
-  createdAt: Data;
+  createdAt: string;
   amount: number;
   diff: number;
   totalAmount: number;

@@ -9,4 +9,9 @@ export interface DispatchProps {
   getData: () => void;
 }
 
-export type Props = StateProps & DispatchProps;
+export interface MergedProps {
+  labels: string[];
+  data: number[];
+}
+
+export type Props = MergedProps & DispatchProps;
