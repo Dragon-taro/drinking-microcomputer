@@ -4,3 +4,8 @@ export interface Data {
   diff: number;
   totalAmount: number;
 }
+
+export interface DataList {
+  data: Data[];
+  isLoading: boolean;
+}

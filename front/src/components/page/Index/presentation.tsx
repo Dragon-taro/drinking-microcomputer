@@ -4,14 +4,9 @@ import { Line, ChartData } from "react-chartjs-2";
 
 const Index: React.FunctionComponent<Props> = ({
   finishParty,
-  getData,
   data: _data,
   labels
 }) => {
-  React.useEffect(() => {
-    getData();
-  }, []);
-
   const datasets: Chart.ChartDataSets[] = [
     {
       label: "飲んだ量",
