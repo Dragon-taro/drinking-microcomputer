@@ -7,12 +7,14 @@ import Loading from "../../page/Loading";
 const Application: React.FunctionComponent<Props> = ({
   getParty,
   getData,
+  subscribeData,
   party,
   data
 }) => {
   React.useEffect(() => {
     getParty();
     getData();
+    subscribeData();
   }, []);
 
   const loading = party.isLoading || data.isLoading;

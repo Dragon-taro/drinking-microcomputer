@@ -1,4 +1,4 @@
-import { SET_DATA, LODING_DATA } from "./constant";
+import { SET_DATA, LODING_DATA, SET_SINGLE_DATA } from "./constant";
 import { DataList } from "../../entity/data";
 
 const init: DataList = {
@@ -13,6 +13,11 @@ export const dataReducer = (state: DataList = init, action: any): DataList => {
     case SET_DATA:
       return {
         data: payload,
+        isLoading: false
+      };
+    case SET_SINGLE_DATA:
+      return {
+        data: [payload, ...state.data],
         isLoading: false
       };
     case LODING_DATA:
