@@ -5,7 +5,7 @@ dist/server:
 	GOOS=linux \
 	GOARCH=amd64 \
 	go build -o dist/server main.go
-	cp -r ../credential/ dist/credential
+	cp -r ./credential/ dist/credential
 	cp .env dist/.env
 
 build:
