@@ -2,6 +2,6 @@ credential
 .env
 *.swp
 node_modules
-bundle.js
+*bundle.js
 sa.json
 .DS_Store

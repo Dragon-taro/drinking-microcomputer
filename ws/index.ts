@@ -1,11 +1,11 @@
-import * as socketio from "socket.io";
-import * as express from "express";
-import { Server } from "http";
+import socketio from "socket.io";
+import express from "express";
+import { createServer } from "http";
 import * as bodyParser from "body-parser";
 
 const app = express();
-const http = new Server(app);
-const io = socketio(http);
+const http = createServer(app);
+const io = socketio(http, { serveClient: false });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
