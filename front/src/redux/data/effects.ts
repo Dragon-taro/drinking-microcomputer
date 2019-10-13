@@ -11,7 +11,7 @@ export const getData = () => async (dispatch: Dispatch) => {
 };
 
 export const subscribeData = () => (dispatch: Dispatch) => {
-  const socket = io.connect("https://drinking.dragon-taro.dev/ws");
+  const socket = io.connect("https://drinking.dragon-taro.dev");
 
   socket.on("message", (data: Data) => {
     dispatch(setSingleData(data));
