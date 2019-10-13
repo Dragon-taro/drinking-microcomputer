@@ -1,10 +1,13 @@
 ---
 # tasks file for server
 - name: mkdir ws
-  file: path=./ws state=directory
+  file: path=./ws state=directory owner=dragontaro group=dragontaro
 
 - name: download Makefile
   command: gsutil cp gs://tar-for-deploy/ws/Makefile ./ws/
+
+- name: chmod
+  file: path=./ws/Makefile owner=dragontaro group=dragontaro
 
 - name: download ws app
   command: chdir=./ws make tar
