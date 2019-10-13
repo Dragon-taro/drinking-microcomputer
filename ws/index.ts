@@ -15,11 +15,11 @@ app.get("/ws/hc", (req, res) => {
 });
 
 app.post("/ws/notify", (req, res) => {
-  io.of("/ws").emit("message", req.body);
+  io.emit("message", req.body);
   res.send("ok");
 });
 
-io.of("/ws").on("connection", () => {
+io.on("connection", () => {
   console.log("connection");
 });
 
