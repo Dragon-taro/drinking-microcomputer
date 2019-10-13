@@ -11,4 +11,4 @@ upload/tar: ws-server.tgz
 	rm ws-server.tgz
 
 deploy: upload/tar
-	ssh dragontaro@drinking.dragon-taro.dev "gsutil cp gs://tar-for-deploy/ws/Makefile . && make run"
+	ssh dragontaro@drinking.dragon-taro.dev "gsutil cp gs://tar-for-deploy/ws/Makefile ./ws/ && cd ws && make run"

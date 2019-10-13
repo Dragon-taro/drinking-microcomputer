@@ -21,6 +21,9 @@ at_front: &at_front
 at_server: &at_server
   working_directory: ~/drinking-microcomputer/server
 
+at_ws: &at_ws
+  working_directory: ~/drinking-microcomputer/ws
+
 jobs:
   build-server:
     <<: *golang
@@ -50,14 +53,14 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - drinking-microcomputer-{{ .Branch }}-{{ checksum "front/yarn.lock" }}
-            - drinking-microcomputer-{{ .Branch }}
+            - drinking-microcomputer-front-{{ .Branch }}-{{ checksum "front/yarn.lock" }}
+            - drinking-microcomputer-front-{{ .Branch }}
       - run:
           name: yarn install
           command: yarn install
           <<: *at_front
       - save_cache:
-          key: drinking-microcomputer-{{ .Branch }}-{{ checksum "front/yarn.lock" }}
+          key: drinking-microcomputer-front-{{ .Branch }}-{{ checksum "front/yarn.lock" }}
           paths:
             - "node_modules"
       - run:
@@ -68,6 +71,32 @@ jobs:
           root: ~/drinking-microcomputer/front
           paths:
             - public/js
+
+  build-ws:
+    <<: *node
+    <<: *root
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - drinking-microcomputer-ws-{{ .Branch }}-{{ checksum "ws/yarn.lock" }}
+            - drinking-microcomputer-ws-{{ .Branch }}
+      - run:
+          name: yarn install
+          command: yarn install
+          <<: *at_ws
+      - save_cache:
+          key: drinking-microcomputer-ws-{{ .Branch }}-{{ checksum "ws/yarn.lock" }}
+          paths:
+            - "node_modules"
+      - run:
+          name: build
+          command: yarn build
+          <<: *at_ws
+      - persist_to_workspace:
+          root: ~/drinking-microcomputer/ws
+          paths:
+            - ws-server
 
   deploy:
     <<: *gcp
@@ -103,6 +132,10 @@ jobs:
           name: deploy server
           command: make deploy
           <<: *at_server
+      - run:
+          name: deploy ws
+          command: make deploy
+          <<: *at_ws
 
   # deploy-srver:
 
@@ -112,6 +145,7 @@ workflows:
     jobs:
       - build-front
       - build-server
+      - build-ws
   deploy:
     jobs:
       - build-front:
@@ -124,7 +158,13 @@ workflows:
             branches:
               only:
                 - master
+      - build-ws:
+          filters:
+            branches:
+              only:
+                - master
       - deploy:
           requires:
             - build-front
             - build-server
+            - build-ws
