@@ -116,6 +116,8 @@ jobs:
           at: ~/drinking-microcomputer/front
       - attach_workspace:
           at: ~/drinking-microcomputer/server
+      - attach_workspace:
+          at: ~/drinking-microcomputer/ws
       - run:
           name: install package
           command: |
