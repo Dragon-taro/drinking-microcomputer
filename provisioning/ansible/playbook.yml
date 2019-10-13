@@ -12,8 +12,8 @@
     nodejs_version: "10.x"
 
   roles:
-    # - role: thefinn93.letsencrypt
-    # - role: nginx
-    # - role: server
+    - thefinn93.letsencrypt
+    - nginx
+    - server
     - geerlingguy.nodejs
     - ws
