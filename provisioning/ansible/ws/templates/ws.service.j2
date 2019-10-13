@@ -1,0 +1,16 @@
+[Unit]
+Description = This is a server for Drinking Microcomputer.
+
+[Service]
+WorkingDirectory = /home/dragontaro/ws/ws-server
+
+ExecStart = /usr/bin/node /home/dragontaro/ws/ws-server/server.bundle.js
+ExecStop = /bin/kill -HUP $MAINPID
+ExecReload = /bin/kill -HUP $MAINPID && /usr/bin/node /home/dragontaro/ws/ws-server/server.bundle.js
+
+Restart = always
+
+Type = simple
+
+[Install]
+WantedBy = multi-user.target

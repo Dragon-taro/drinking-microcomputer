@@ -11,18 +11,18 @@ type DataInteractor struct {
 	DataRepository DataRepository
 }
 
-func (i *DataInteractor) Add(dr entity.DataReqest) error {
+func (i *DataInteractor) Add(dr entity.DataReqest) (*entity.Data, error) {
 	d, err := i.createData(dr)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	err = i.DataRepository.Store(d)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return &d, nil
 }
 
 func (i *DataInteractor) Data() (*[]entity.Data, error) {

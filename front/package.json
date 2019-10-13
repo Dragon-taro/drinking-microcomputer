@@ -18,7 +18,8 @@
     "react-dom": "^16.9.0",
     "react-redux": "^7.1.1",
     "redux": "^4.0.4",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
@@ -31,6 +32,7 @@
     "@types/react-dom": "^16.8.5",
     "@types/react-redux": "^7.1.1",
     "@types/redux": "^3.6.0",
+    "@types/socket.io-client": "^1.4.32",
     "babel-loader": "^8.0.6",
     "babel-polyfill": "^6.26.0",
     "chart.js": "^2.8.0",

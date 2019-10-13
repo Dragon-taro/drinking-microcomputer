@@ -9,6 +9,7 @@ export interface StateProps {
 export interface DispatchProps {
   getParty: () => void;
   getData: () => void;
+  subscribeData: () => void;
 }
 
 export type Props = StateProps & DispatchProps;

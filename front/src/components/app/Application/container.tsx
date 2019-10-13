@@ -3,7 +3,7 @@ import { StateProps, DispatchProps } from "./type";
 import { connect } from "react-redux";
 import Application from "./presentation";
 import { getParty } from "../../../redux/party/effects";
-import { getData } from "../../../redux/data/effects";
+import { getData, subscribeData } from "../../../redux/data/effects";
 
 const mapStateToProps = (state: RootState): StateProps => ({
   party: state.party,
@@ -16,6 +16,9 @@ const mapDispatchToProps = (dispatch: any): DispatchProps => ({
   },
   getData: () => {
     dispatch(getData());
+  },
+  subscribeData: () => {
+    dispatch(subscribeData());
   }
 });
 

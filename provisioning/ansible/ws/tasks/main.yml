@@ -1,0 +1,16 @@
+---
+# tasks file for server
+- name: mkdir ws
+  file: path=./ws state=directory
+
+- name: download Makefile
+  command: gsutil cp gs://tar-for-deploy/ws/Makefile ./ws/
+
+- name: download ws app
+  command: chdir=./ws make tar
+
+- name: copy server systemd file
+  template: src=templates/ws.service.j2 dest=/etc/systemd/system/ws.service
+
+- name: start server
+  service: name=ws state=started

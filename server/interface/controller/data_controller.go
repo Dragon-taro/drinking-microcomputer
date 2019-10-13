@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"bytes"
+	"encoding/json"
 	"net/http"
 
 	"github.com/Dragon-taro/drinking-microcomputer/server/entity"
@@ -35,11 +37,15 @@ func (controller *DataController) Create(c Context) error {
 		return c.JSON(http.StatusBadRequest, "invalid request")
 	}
 
-	if err := controller.Interactor.Add(dr); err != nil {
+	d, err := controller.Interactor.Add(dr)
+
+	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	return c.JSON(http.StatusCreated, "success")
+	notify(d)
+
+	return c.JSON(http.StatusCreated, d)
 }
 
 func (controller *DataController) HealthCheck(c Context) error {
@@ -53,4 +59,25 @@ func (controller *DataController) Index(c Context) error {
 	}
 
 	return c.JSON(http.StatusOK, d)
+}
+
+func notify(arg interface{}) {
+	b, _ := json.Marshal(arg)
+	jsonStr := string(b)
+	req, _ := http.NewRequest(
+		"POST",
+		"http://localhost:3001/ws/notify",
+		bytes.NewBuffer([]byte(jsonStr)),
+	)
+
+	// Content-Type 設定
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return
+	}
+
+	defer resp.Body.Close()
 }
