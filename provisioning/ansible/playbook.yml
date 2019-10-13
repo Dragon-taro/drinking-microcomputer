@@ -9,8 +9,11 @@
     letsencrypt_cert_domains:
       - drinking.dragon-taro.dev
     letsencrypt_renewal_command_args: '--renew-hook "systemctl restart nginx"'
+    nodejs_version: "10.x"
 
   roles:
-    - role: thefinn93.letsencrypt
-    - role: nginx
-    - role: server
+    # - role: thefinn93.letsencrypt
+    # - role: nginx
+    # - role: server
+    - geerlingguy.nodejs
+    - ws

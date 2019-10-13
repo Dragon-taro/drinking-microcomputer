@@ -1,0 +1,7 @@
+tar:
+	gsutil cp gs://tar-for-deploy/ws/ws-server.tgz .
+	sudo tar -xzvf ws-server.tgz
+	rm ws-server.tgz
+
+run: tar
+	sudo systemctl restart ws

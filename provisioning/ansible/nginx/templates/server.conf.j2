@@ -8,6 +8,10 @@ server{
 		proxy_pass http://localhost:3000;
 	}
 
+	location /ws/socket.io {
+		proxy_pass http://localhost:3001;
+	}
+
 	index index.html;
 
 	location / {
