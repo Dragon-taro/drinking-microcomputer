@@ -3,7 +3,6 @@ tar:
 	sudo tar -xzvf ws-server.tgz
 	rm ws-server.tgz
 	sudo rsync -ac ./ws-server /var/www
-	rm -rf ws-server
 
 run: tar
 	sudo systemctl restart ws
