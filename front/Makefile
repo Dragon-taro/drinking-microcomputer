@@ -1,5 +1,6 @@
 deploy:
 	tar -czvf public.tgz ./public
-	scp public.tgz dragontaro@drinking.dragon-taro.dev:~
-	ssh dragontaro@drinking.dragon-taro.dev "tar -xzvf public.tgz && rm public.tgz"
+	gsutil cp ./public.tgz gs://tar-for-deploy/front/
+	gsutil cp ./Makefile.prd gs://tar-for-deploy/front/Makefile
+	ssh -i ~/.ssh/drinking_microcomputer dragontaro@drinking.dragon-taro.dev "gsutil cp gs://tar-for-deploy/front/Makefile ./front/ && cd front && make run" 
 	rm public.tgz

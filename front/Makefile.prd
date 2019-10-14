@@ -1,0 +1,7 @@
+tar:
+	gsutil cp gs://tar-for-deploy/front/public.tgz .
+	sudo tar -xzvf public.tgz
+	rm public.tgz
+
+run: tar
+	sudo rsync -ac ./public /var/www/html
