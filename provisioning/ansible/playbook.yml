@@ -19,8 +19,8 @@
       apt: name=rsync
 
   roles:
-    # - thefinn93.letsencrypt
-    # - nginx
-    # - server
-    # - geerlingguy.nodejs
+    - thefinn93.letsencrypt
+    - nginx
+    - server
+    - geerlingguy.nodejs
     - ws

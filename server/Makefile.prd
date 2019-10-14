@@ -1,7 +1,10 @@
 tar:
-	gsutil cp gs://tar-for-deploy/dist.tgz .
+	gsutil cp gs://tar-for-deploy/server/dist.tgz .
 	sudo tar -xzvf dist.tgz
 	rm dist.tgz
+	mv ./dist ./server
+	sudo rsync -ac ./server /var/www
+	rm -rf server
 
 run: tar
 	sudo systemctl restart server
