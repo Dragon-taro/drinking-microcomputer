@@ -5,7 +5,7 @@ dist/server:
 	GOOS=linux \
 	GOARCH=amd64 \
 	go build -o dist/server main.go
-	cp -r ./credential/ dist/credential
+	cp -r ../credential/ dist/credential
 	cp .env dist/.env
 
 build:
@@ -13,10 +13,10 @@ build:
 
 upload/tar: dist/server
 	tar -czvf dist.tgz dist/
-	gsutil cp ./dist.tgz gs://tar-for-deploy
-	gsutil cp ./Makefile.prd gs://tar-for-deploy/Makefile
+	gsutil cp ./dist.tgz gs://tar-for-deploy/server/
+	gsutil cp ./Makefile.prd gs://tar-for-deploy/server/Makefile
 
 deploy: upload/tar
-	ssh dragontaro@drinking.dragon-taro.dev "gsutil cp gs://tar-for-deploy/Makefile . && make run"
+	ssh dragontaro@drinking.dragon-taro.dev "gsutil cp gs://tar-for-deploy/server/Makefile ./server/ && cd server && make run"
 	rm -rf dist
 	rm dist.tgz

@@ -2,11 +2,11 @@
 Description = This is a server for Drinking Microcomputer.
 
 [Service]
-WorkingDirectory = /home/dragontaro/dist
+WorkingDirectory = /var/www/server
 
-ExecStart = /home/dragontaro/dist/server
-ExecStop = /bin/kill -HUP $MAINOID
-ExecReload = /bin/kill -HUP $MAINOID && /home/dragontaro/dist/server
+ExecStart = /var/www/server/server
+ExecStop = /bin/kill -HUP $MAINPID
+ExecReload = /bin/kill -HUP $MAINPID && /var/www/server/server
 
 Restart = always
 

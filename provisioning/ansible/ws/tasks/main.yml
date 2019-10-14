@@ -16,4 +16,9 @@
   template: src=templates/ws.service.j2 dest=/etc/systemd/system/ws.service
 
 - name: start server
-  service: name=ws state=started
+  systemd:
+    name: ws.service
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+  become: yes

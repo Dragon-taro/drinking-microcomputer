@@ -35,7 +35,9 @@ jobs:
           command: |
             mkdir credential
             echo ${SERVICE_ACCOUNT} >> credential/firestore.json
-            touch .env
+      - run:
+          name: create service account & .env
+          command: touch .env
           <<: *at_server
       - run:
           name: build

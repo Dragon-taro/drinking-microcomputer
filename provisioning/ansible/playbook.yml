@@ -11,6 +11,13 @@
     letsencrypt_renewal_command_args: '--renew-hook "systemctl restart nginx"'
     nodejs_version: "10.x"
 
+  tasks:
+    - name: mkdir front
+      file: path=./front state=directory owner=dragontaro group=dragontaro
+
+    - name: install rsync
+      apt: name=rsync
+
   roles:
     - thefinn93.letsencrypt
     - nginx
