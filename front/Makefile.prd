@@ -4,5 +4,5 @@ tar:
 	rm public.tgz
 
 run: tar
-	mv ./public ./html
+	sudo mv ./public ./html
 	sudo rsync -ac ./html /var/www
